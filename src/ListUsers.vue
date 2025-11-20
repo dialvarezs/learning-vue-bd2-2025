@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import type { User } from '../interfaces';
+import type { User } from './interfaces';
 
 const props = defineProps<{
     token: string
