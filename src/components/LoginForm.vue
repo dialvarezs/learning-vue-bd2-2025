@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { login } from '@/api';
 import { useAuthStore } from '@/stores/auth';
 import { ref } from 'vue';
 
@@ -9,24 +10,16 @@ const emit = defineEmits<{
     (e: 'login-success', token: string): void
 }>()
 
-async function login() {
-    const body = new URLSearchParams({
-        username: username.value,
-        password: password.value,
-    })
-    const response = await fetch("http://localhost:8000/auth/login", {
-        method: "POST",
-        body: body,
-    })
-    if (response.ok) {
-        const data = await response.json()
-        const auth = useAuthStore()
+async function doLogin() {
+    const loginData = await login(username.value, password.value)
+    const auth = useAuthStore()
 
+    if (loginData) {
         username.value = ''
         password.value = ''
-        auth.setToken(data.access_token)
+        auth.setToken(loginData.access_token)
     } else {
-        alert("Error en el inicio de sesión")
+        alert('Inicio de sesión incorrecto')
     }
 }
 
@@ -43,7 +36,7 @@ async function login() {
             <input type="password" id="password" v-model="password"> </input>
         </div>
         <div>
-            <button @click="login"> Iniciar sesión </button>
+            <button @click="doLogin"> Iniciar sesión </button>
         </div>
     </div>
 </template>

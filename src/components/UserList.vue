@@ -2,33 +2,40 @@
 import { ref, type Ref } from 'vue';
 import type { User } from '@/interfaces';
 import { useAuthStore } from '@/stores/auth';
+import { fetchUsers } from '@/api';
+import { useRouter } from 'vue-router';
 
+const router = useRouter()
 const auth = useAuthStore()
 const users: Ref<User[]> = ref([])
 
-async function fetchUsers() {
-    const headers = new Headers()
-    if (auth.token) {
-        headers.append("Authorization", `Bearer ${auth.token}`)
-    }
-    const response = await fetch("http://localhost:8000/users", { headers })
-    users.value = await response.json()
+async function getUsers() {
+    users.value = await fetchUsers(auth.token)
+}
+async function goToEditUser(userId: number) {
+    await router.push({ name: 'userEdit', params: { id: userId } })
 }
 </script>
 
 <template>
-    <button @click="fetchUsers">Cargar usuarios</button>
+    <button @click="getUsers">Cargar usuarios</button>
     <div>
         <table v-if="users.length > 0">
             <thead>
                 <tr>
                     <td>Usuario</td>
                     <td>Nombre</td>
+                    <td></td>
                 </tr>
             </thead>
             <tr v-for="user in users">
                 <td>{{ user.username }}</td>
                 <td>{{ user.fullname }}</td>
+                <td>
+                    <button @click="goToEditUser(user.id)">
+                        Editar
+                    </button>
+                </td>
             </tr>
         </table>
         <div v-else>
