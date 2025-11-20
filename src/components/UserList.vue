@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import type { User } from './interfaces';
+import type { User } from '@/interfaces';
+import { useAuthStore } from '@/stores/auth';
 
-const props = defineProps<{
-    token: string
-}>();
-
+const auth = useAuthStore()
 const users: Ref<User[]> = ref([])
 
 async function fetchUsers() {
     const headers = new Headers()
-    headers.append("Authorization", `Bearer ${props.token}`)
+    if (auth.token) {
+        headers.append("Authorization", `Bearer ${auth.token}`)
+    }
     const response = await fetch("http://localhost:8000/users", { headers })
     users.value = await response.json()
 }

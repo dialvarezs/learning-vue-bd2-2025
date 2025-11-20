@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useAuthStore } from '@/stores/auth';
 import { ref } from 'vue';
 
 const username = ref('')
@@ -19,10 +20,11 @@ async function login() {
     })
     if (response.ok) {
         const data = await response.json()
+        const auth = useAuthStore()
+
         username.value = ''
         password.value = ''
-        alert("Inicio de sesión exitoso")
-        emit('login-success', data.access_token)
+        auth.setToken(data.access_token)
     } else {
         alert("Error en el inicio de sesión")
     }

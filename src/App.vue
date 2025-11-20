@@ -1,21 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import LoginForm from './LoginForm.vue';
-import ListUsers from './ListUsers.vue';
+import { useAuthStore } from './stores/auth';
 
-const token = ref('');
-
-function handleLoginSuccess(newToken: string) {
-  token.value = newToken;
-}
+const auth = useAuthStore()
 </script>
 
 <template>
-  <LoginForm @login-success="handleLoginSuccess" />
-  <!-- <div v-if="token"> -->
-    <p>Token de autenticación: {{ token }}</p>
-    <ListUsers :token="token" />
-  <!-- </div> -->
+  <nav>
+    <router-link :to="{ name: 'home' }"> Home </router-link> |
+    <router-link to="/login"> Login </router-link>
+  </nav>
+  <nav v-if="auth.token">
+    <button @click="auth.clearToken()">Cerrar sesión</button>
+  </nav>
+  <main>
+    <RouterView />
+  </main>
 </template>
 
 <style scoped></style>
