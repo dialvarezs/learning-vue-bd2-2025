@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, type Ref } from 'vue';
-import type { User } from '@/interfaces';
-import { useAuthStore } from '@/stores/auth';
-import { fetchUsers } from '@/api';
-import { useRouter } from 'vue-router';
+import { ref, type Ref } from 'vue'
+import type { User } from '@/interfaces'
+import { useAuthStore } from '@/stores/auth'
+import { fetchUsers } from '@/api'
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -32,15 +32,11 @@ async function goToEditUser(userId: number) {
                 <td>{{ user.username }}</td>
                 <td>{{ user.fullname }}</td>
                 <td>
-                    <button @click="goToEditUser(user.id)">
-                        Editar
-                    </button>
+                    <button @click="goToEditUser(user.id)">Editar</button>
                 </td>
             </tr>
         </table>
-        <div v-else>
-            No hay datos de usuarios cargados.
-        </div>
+        <div v-else>No hay datos de usuarios cargados.</div>
     </div>
 </template>
 

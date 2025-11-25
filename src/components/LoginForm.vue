@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { login } from '@/api';
-import { useAuthStore } from '@/stores/auth';
-import { ref } from 'vue';
+import { login } from '@/api'
+import { useAuthStore } from '@/stores/auth'
+import { ref } from 'vue'
 
 const username = ref('')
 const password = ref('')
@@ -22,21 +22,20 @@ async function doLogin() {
         alert('Inicio de sesión incorrecto')
     }
 }
-
 </script>
 
 <template>
     <div>
         <div>
             <label for="username">Usuario:</label>
-            <input id="username" v-model="username"> </input>
+            <input id="username" v-model="username" />
         </div>
         <div>
             <label for="password">Contraseña:</label>
-            <input type="password" id="password" v-model="password"> </input>
+            <input type="password" id="password" v-model="password" />
         </div>
         <div>
-            <button @click="doLogin"> Iniciar sesión </button>
+            <button @click="doLogin">Iniciar sesión</button>
         </div>
     </div>
 </template>

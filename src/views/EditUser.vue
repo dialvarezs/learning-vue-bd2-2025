@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { fetchUser, patchUser } from '@/api';
-import UserForm from '@/components/UserForm.vue';
-import type { User } from '@/interfaces';
-import { useAuthStore } from '@/stores/auth';
-import { ref, type Ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { fetchUser, patchUser } from '@/api'
+import UserForm from '@/components/UserForm.vue'
+import type { User } from '@/interfaces'
+import { useAuthStore } from '@/stores/auth'
+import { ref, type Ref } from 'vue'
+import { useRoute } from 'vue-router'
 
 const auth = useAuthStore()
 const route = useRoute()
@@ -21,6 +21,5 @@ loadUser()
 </script>
 
 <template>
-    {{ user }}
     <UserForm :inputUserData="user" @save-user="updateUser" />
 </template>

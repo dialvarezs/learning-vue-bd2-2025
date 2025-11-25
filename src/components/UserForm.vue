@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { User } from '@/interfaces';
-import { ref, watch } from 'vue';
+import type { User } from '@/interfaces'
+import { ref, watch } from 'vue'
 
 const props = defineProps<{
     inputUserData?: User | null
@@ -11,7 +11,7 @@ const emit = defineEmits<{
 
 const userData = ref({
     username: '',
-    fullname: ''
+    fullname: '',
 })
 
 watch(props, () => {
@@ -23,7 +23,7 @@ watch(props, () => {
 async function saveUser() {
     emit('save-user', {
         username: userData.value.username,
-        fullname: userData.value.fullname
+        fullname: userData.value.fullname,
     } as User)
 }
 </script>
