@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue'
 import type { User } from '@/interfaces'
-import { useAuthStore } from '@/stores/auth'
 import { fetchUsers } from '@/api'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const auth = useAuthStore()
 const users: Ref<User[]> = ref([])
 
 async function getUsers() {
-    users.value = await fetchUsers(auth.token)
+    users.value = await fetchUsers()
 }
 async function goToEditUser(userId: number) {
     await router.push({ name: 'userEdit', params: { id: userId } })

@@ -1,4 +1,22 @@
 import type { LoginResponse, User } from '@/interfaces'
+import { useAuthStore } from '@/stores/auth'
+
+const API_BASE_URL = "http://localhost:8000"
+
+export async function apiFetch(path: string, config: Record<string, any>) {
+    const auth = useAuthStore()
+    const headers = new Headers()
+    if (auth.token) {
+        headers.append('Authorization', `Bearer ${auth.token}`)
+        if (config.headers) {
+            config.headers = {...headers, ...config.headers}
+        } else {
+            config.headers = headers
+        }
+    }
+
+    return await fetch(`${API_BASE_URL}${path}`, config)
+} 
 
 export async function login(
     username: string,
@@ -17,42 +35,25 @@ export async function login(
     }
 }
 
-export async function fetchUsers(token: string | null): Promise<User[]> {
-    const headers = new Headers()
-    if (token) {
-        headers.append('Authorization', `Bearer ${token}`)
-    }
-    const response = await fetch('http://localhost:8000/users', { headers })
+export async function fetchUsers(): Promise<User[]> {
+    const response = await apiFetch('/users', {})
     return await response.json()
 }
 
 export async function fetchUser(
     id: number,
-    token: string | null,
 ): Promise<User | null> {
-    const headers = new Headers()
-    if (token) {
-        headers.append('Authorization', `Bearer ${token}`)
-    }
-    const response = await fetch(`http://localhost:8000/users/${id}`, {
-        headers,
-    })
+    const response = await apiFetch(`/users/${id}`, {})
     return await response.json()
 }
 
 export async function patchUser(
     id: number,
     userData: User,
-    token: string | null,
 ) {
-    const headers = new Headers()
-    if (token) {
-        headers.append('Authorization', `Bearer ${token}`)
-    }
-    const response = await fetch(`http://localhost:8000/users/${id}`, {
+    const response = await apiFetch(`/users/${id}`, {
         method: 'PATCH',
         body: JSON.stringify(userData),
-        headers,
     })
     return await response.json()
 }

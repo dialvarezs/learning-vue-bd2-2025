@@ -2,19 +2,17 @@
 import { fetchUser, patchUser } from '@/api'
 import UserForm from '@/components/UserForm.vue'
 import type { User } from '@/interfaces'
-import { useAuthStore } from '@/stores/auth'
 import { ref, type Ref } from 'vue'
 import { useRoute } from 'vue-router'
 
-const auth = useAuthStore()
 const route = useRoute()
 const user: Ref<User | null> = ref(null)
 
 async function loadUser() {
-    user.value = await fetchUser(Number(route.params.id), auth.token)
+    user.value = await fetchUser(Number(route.params.id))
 }
 async function updateUser(updatedUser: User) {
-    await patchUser(Number(route.params.id), updatedUser, auth.token)
+    await patchUser(Number(route.params.id), updatedUser)
 }
 
 loadUser()
